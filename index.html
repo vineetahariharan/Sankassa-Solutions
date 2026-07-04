@@ -16,6 +16,7 @@
     --sage: #4a6741;
     --stone: #8c7b6b;
     --mist: #ede9e1;
+    --navy-brand: #001242; /* Accurate corporate navy color from the logo */
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,29 +34,30 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 5%;
+    padding: 0.5rem 5%;
     background: rgba(247,243,236,0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(184,150,46,0.2);
   }
 
   .nav-logo {
-    display: flex; flex-direction: column; line-height: 1;
+    display: flex;
+    align-items: center;
+    height: 100px;
+   
   }
-  .nav-logo .wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    font-size: 1.35rem;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-  }
-  .nav-logo .tagline {
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-top: 2px;
-  }
+  .nav-logo img {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4%; /* Changing top and bottom padding to 0 lets the logo stretch completely */
+  height: 70px;  /* Locks the navbar profile height */
+  background: rgba(255, 255, 255, 0.98);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
 
   nav ul {
     display: flex; gap: 2.2rem; list-style: none;
@@ -71,27 +73,73 @@
   }
   nav ul a:hover { opacity: 1; color: var(--saffron); }
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* GLOBAL WATERMARK STYLE FOR SECTIONS */
+  section, .hero, .vision-band {
     position: relative;
     overflow: hidden;
   }
 
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 10rem 5% 6rem 7%;
-    position: relative; z-index: 2;
+  .global-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    max-width: 800px;
+    opacity: 0.03; /* Very soft subtle overlay for general pages */
+    z-index: 0;
+    pointer-events: none;
+  }
+  .global-watermark img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Target dark background section to maintain visible contrast */
+  #about .global-watermark {
+    opacity: 0.05;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Target components inside sections to sit safely above the watermark layer */
+  .hero-container, .hero-badge-container, .reveal, .services-grid, .services-row2, .pillars-grid, .founder-grid, .gallery-header, .gallery-grid, .gallery-cta, .contact-info, .contact-form-area {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HERO Layout */
+  .hero {
+    min-height: 100vh;
+    background: #ffffff;
+    padding: 12rem 7% 6rem 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .hero-content {
+    flex: 1;
+    max-width: 780px;
   }
 
   .hero-eyebrow {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--saffron);
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: block;
     opacity: 0;
     animation: fadeUp 0.9s 0.2s forwards;
   }
@@ -99,8 +147,8 @@
   .hero-title {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: clamp(3rem, 5vw, 5rem);
-    line-height: 1.05;
+    font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+    line-height: 1.1;
     color: var(--ink);
     opacity: 0;
     animation: fadeUp 0.9s 0.4s forwards;
@@ -111,10 +159,10 @@
   }
 
   .hero-subtitle {
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 1.05rem;
+    line-height: 1.75;
     color: var(--stone);
-    max-width: 480px;
+    max-width: 680px;
     margin-top: 2rem;
     opacity: 0;
     animation: fadeUp 0.9s 0.6s forwards;
@@ -122,7 +170,7 @@
 
   .hero-cta {
     display: inline-flex; align-items: center; gap: 0.7rem;
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     font-size: 0.8rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -136,59 +184,67 @@
   }
   .hero-cta:hover { gap: 1.2rem; }
 
-  .hero-right {
-    position: relative; overflow: hidden;
+  .hero-logo-side {
+    flex-shrink: 0;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
-    animation: fadeIn 1.2s 0.3s forwards;
+    animation: fadeIn 1.2s 0.5s forwards;
   }
-  .hero-right::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 40%, var(--sage) 100%);
-    opacity: 0.9;
+  .hero-logo-side img {
+    width: 100%;
+    height: 500px;
+    display: block;
   }
-  .hero-pattern {
-    position: absolute; inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.07) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 40%);
-  }
-  .hero-geo {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .hero-geo svg {
-    width: 70%; opacity: 0.15;
+
+  .hero-badge-container {
+    position: absolute;
+    bottom: 2rem;
+    right: 7%;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.9s forwards;
   }
   .hero-stat-box {
-    position: absolute; bottom: 3rem; left: 3rem;
-    background: rgba(247,243,236,0.12);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(247,243,236,0.25);
-    padding: 1.5rem 2rem;
-    color: white;
+    background: var(--cream);
+    border: 1px solid rgba(140,123,107,0.25);
+    padding: 1.2rem 1.8rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0px 10px 30px rgba(205, 159, 6, 0.05);
   }
   .hero-stat-box .stat-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem;
+    font-size: 3rem;
     font-weight: 300;
     line-height: 1;
+    color: var(--navy-brand);
+  }
+  .hero-stat-box .stat-label-group {
+    display: flex;
+    flex-direction: column;
   }
   .hero-stat-box .stat-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    opacity: 0.8;
-    margin-top: 0.4rem;
+    color: var(--navy-brand);
+  }
+  .hero-stat-box .stat-desc {
+    font-size: 0.75rem;
+    color: var(--stone);
+    margin-top: 0.2rem;
   }
 
-  /* DIVIDER */
   .divider {
     width: 100%; height: 3px;
-    background: linear-gradient(90deg, transparent, var(--saffron), var(--gold), transparent);
+    background: linear-gradient(90deg, transparent, var(--navy-brand), var(--gold), transparent);
   }
 
-  /* SECTION BASE */
   section { padding: 7rem 7%; }
 
   .section-label {
@@ -323,22 +379,9 @@
 
   /* VISION BAND */
   .vision-band {
-    background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 100%);
+    background: linear-gradient(135deg, var(--navy-brand) 0%, var(--saffron) 100%);
     padding: 5rem 7%;
     text-align: center;
-    position: relative; overflow: hidden;
-  }
-  .vision-band::before {
-    content: 'भारत@2047';
-    position: absolute;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.07);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-    pointer-events: none;
   }
   .vision-band h2 {
     font-family: 'Cormorant Garamond', serif;
@@ -423,9 +466,6 @@
     object-fit: cover;
     object-position: center top;
     display: block;
-  }
-  .founder-avatar-initials {
-    display: none;
   }
   .founder-name-plate {
     background: var(--saffron);
@@ -532,6 +572,7 @@
   .contact-row {
     display: flex; align-items: flex-start; gap: 1rem;
     font-size: 0.9rem; line-height: 1.6;
+    margin-bottom: 1.5rem;
   }
   .contact-row .icon {
     width: 36px; height: 36px;
@@ -544,8 +585,8 @@
   .contact-row .value { color: var(--ink); margin-top: 0.1rem; }
 
   .contact-form-area {
-    background: var(--mist);
-    padding: 3rem;
+    background: transparent;
+    padding: 1rem 0;
   }
   .contact-form-area h3 {
     font-family: 'Cormorant Garamond', serif;
@@ -563,6 +604,7 @@
     margin-bottom: 0.5rem;
   }
   .form-group input,
+  .form-group select,
   .form-group textarea {
     width: 100%;
     background: white;
@@ -575,8 +617,10 @@
     transition: border-color 0.2s;
   }
   .form-group input:focus,
+  .form-group select:focus,
   .form-group textarea:focus { border-color: var(--saffron); }
   .form-group textarea { height: 120px; resize: none; }
+  .form-group select { cursor: pointer; }
 
   .btn-primary {
     display: inline-block;
@@ -637,7 +681,6 @@
     to   { opacity: 1; }
   }
 
-  /* Scroll reveal */
   .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -683,7 +726,6 @@
     color: white;
   }
 
-  /* Masonry-style grid */
   .gallery-grid {
     columns: 4;
     column-gap: 12px;
@@ -722,7 +764,6 @@
     color: rgba(247,243,236,0.85);
   }
 
-  /* Tall items for visual variety */
   .gallery-item.tall img { aspect-ratio: 2/3; object-fit: cover; }
   .gallery-item.wide img { aspect-ratio: 4/3; object-fit: cover; }
   .gallery-item.sq   img { aspect-ratio: 1/1; object-fit: cover; }
@@ -785,8 +826,10 @@
   /* RESPONSIVE */
   @media (max-width: 1024px) {
     .gallery-grid { columns: 3; }
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-right { height: 350px; }
+    .hero-container { flex-direction: column; text-align: center; gap: 3rem; }
+    .hero { padding-top: 10rem; }
+    .hero-subtitle { margin-left: auto; margin-right: auto; }
+    .hero-badge-container { position: relative; right: auto; bottom: auto; margin-top: 2rem; }
     #about { grid-template-columns: 1fr; }
     .services-grid, .services-row2 { grid-template-columns: repeat(2, 1fr); }
     .services-row2 .service-card:nth-child(2) { border-right: none; }
@@ -802,17 +845,22 @@
     .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
     .career-item { grid-template-columns: 1fr; gap: 0.2rem; }
     .gallery-grid { columns: 2; }
+    .hero-logo-side { width: 240px; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <span class="wordmark">Sankassa Solutions</span>
-    <span class="tagline">OPC Private Limited ·</span>
-  </div>
+  <div class="nav-brand" style="display: flex; align-items: center; gap: 12px; height: 100%; padding: 0;">
+  <img src="snakassasolution.png" alt="Sankassa Solutions Logo" style="height: 70px; width: auto; display: block; object-fit: contain; opacity: 1;">
+  
+  <div style="width: 1px; height: 40px; background-color: rgba(0, 18, 66, 0.2); margin: 0 4px;"></div>
+  
+  <span style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.25rem; color: var(--navy-brand); letter-spacing: 0.3px; white-space: nowrap;">
+    Sankassa Solutions
+  </span>
+</div>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
@@ -823,52 +871,47 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-left">
-    <span class="hero-eyebrow">Evidence · Policy · Impact</span>
-    <h1 class="hero-title">
-      Shaping <em>Policy,</em><br>
-      Enabling <em>Growth,</em><br>
-      Building India
-    </h1>
-    <p class="hero-subtitle">
-      Sankassa Solutions is a policy advisory and strategic development firm dedicated to evidence,based governance, inclusive enterprise growth, and institutional capacity building,aligned with India's vision for 2047.
-    </p>
-    <a href="#about" class="hero-cta">Discover our work →</a>
-  </div>
-  <div class="hero-right">
-    <div class="hero-pattern"></div>
-    <div class="hero-geo">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="100,10 190,55 190,145 100,190 10,145 10,55" stroke="white" stroke-width="1"/>
-        <polygon points="100,30 170,65 170,135 100,170 30,135 30,65" stroke="white" stroke-width="0.5"/>
-        <polygon points="100,50 150,75 150,125 100,150 50,125 50,75" stroke="white" stroke-width="0.5"/>
-        <circle cx="100" cy="100" r="3" fill="white" opacity="0.6"/>
-        <line x1="100" y1="10" x2="100" y2="190" stroke="white" stroke-width="0.3" opacity="0.4"/>
-        <line x1="10" y1="55" x2="190" y2="145" stroke="white" stroke-width="0.3" opacity="0.4"/>
-        <line x1="10" y1="145" x2="190" y2="55" stroke="white" stroke-width="0.3" opacity="0.4"/>
-      </svg>
+
+  <div class="hero-container">
+    <div class="hero-content">
+      <span class="hero-eyebrow">Evidence · Policy · Impact</span>
+      <h1 class="hero-title">
+        Shaping <em>Policy,</em><br>
+        Enabling <em>Growth,</em><br>
+        Building India
+      </h1>
+      <p class="hero-subtitle">
+        Sankassa Solutions is a policy advisory and strategic development firm dedicated to evidence-based governance, inclusive enterprise growth, and institutional capacity building, aligned with India's vision for 2047.
+      </p>
+      <a href="#about" class="hero-cta">Discover our work →</a>
     </div>
-    <div class="hero-stat-box">
-      <div class="stat-num">8</div>
-      <div class="stat-label">Core Mandates</div>
-    </div>
+
+ <div class="hero-logo-side" style="flex-shrink: 0; width: 700px; max-width: 100%; display: flex; justify-content: top; align-items: center;">
+  <img src="FINALLOGORIGHT.png" alt="Sankassa Solutions Logo" style="width: 100%; height: auto; display: block; mix-blend-mode: multiply; filter: contrast(1.1);">
+</div>
+
+  <div class="hero-badge-container" style="position: absolute; bottom: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(184, 150, 46, 0.3); border-radius: 30px; padding: 10px 24px; box-shadow: 0 10px 30px rgba(0, 18, 66, 0.1); max-width: 450px; display: flex; align-items: center; gap: 12px; overflow: hidden;">
+  <span style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: var(--saffron); white-space: nowrap; border-right: 2px solid var(--gold); padding-right: 12px;">
+    8 Core Mandates
+  </span>
+  <div class="mandates-scroller" style="display: flex; white-space: nowrap; gap: 24px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--navy-brand); font-weight: 500;">
+    <span> Evidence-Based Policy Solutions</span>
   </div>
+</div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="reveal">
     <div class="section-label">Who We Are</div>
     <h2 class="section-title">A solutions firm at the nexus of policy, governance &amp; development</h2>
     <p class="section-body">
-      Incorporated  under the Companies Act, 2013, Sankassa Solutions (OPC) Private Limited brings together deep expertise across public policy, territorial development, enterprise growth, and social capacity building. We believe that meaningful change happens at the intersection of data, governance, and human aspiration.
+      Incorporated under the Companies Act, 2013, Sankassa Solutions (OPC) Private Limited brings together deep expertise across public policy, territorial development, enterprise growth, and social capacity building. We believe that meaningful change happens at the intersection of data, governance, and human aspiration.
     </p>
     <p class="section-body" style="margin-top:1rem;">
-      From advising governments and institutions to supporting startups and MSMEs, we work across scales,local, regional, and national,to deliver evidence-based, context,specific interventions that last.
+      From advising governments and institutions to supporting startups and MSMEs, we work across local, regional, and national scales to deliver evidence-based, context-specific interventions that last.
     </p>
   </div>
   <div class="about-visual reveal">
@@ -885,7 +928,6 @@
   </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services">
   <div class="services-intro reveal">
     <div>
@@ -893,22 +935,21 @@
       <h2 class="section-title">Eight mandates, one purpose</h2>
     </div>
     <p style="font-size:1rem;line-height:1.8;color:var(--stone);padding-top:1rem;">
-      Our core services span the full spectrum of policy,to,impact delivery,from evidence generation and strategic advisory to community activation and cross,sector collaboration.
+      Our core services span the full spectrum of policy-to-impact delivery, from evidence generation and strategic advisory to community activation and cross-sector collaboration.
     </p>
   </div>
-
   <div class="services-grid reveal">
     <div class="service-card">
       <div class="service-num">01</div>
       <div class="service-icon">📊</div>
       <h3>Evidence-Based Policy Solutions</h3>
-      <p>Designing data,driven policy frameworks that address the evolving needs of governments, communities, and institutions for inclusive and sustainable development.</p>
+      <p>Designing data-driven policy frameworks that address the evolving needs of governments, communities, and institutions for inclusive and sustainable development.</p>
     </div>
     <div class="service-card">
       <div class="service-num">02</div>
       <div class="service-icon">🗺️</div>
       <h3>Strategic Advisory &amp; Territorial Development</h3>
-      <p>Advisory across public policy, urban and rural development, and enterprise growth,aligned with Smart Cities Mission, RAMP, and other national initiatives.</p>
+      <p>Advisory across public policy, urban and rural development, and enterprise growth, aligned with Smart Cities Mission, RAMP, and other national initiatives.</p>
     </div>
     <div class="service-card">
       <div class="service-num">03</div>
@@ -920,7 +961,7 @@
       <div class="service-num">04</div>
       <div class="service-icon">🎓</div>
       <h3>Skill Development &amp; Capacity Building</h3>
-      <p>Structured programmes for youth, women, and micro,enterprises,enhancing employability, digital literacy, and business acumen across rural and urban India.</p>
+      <p>Structured programmes for youth, women, and micro-enterprises, enhancing employability, digital literacy, and business acumen across rural and urban India.</p>
     </div>
   </div>
   <div class="services-row2 reveal">
@@ -928,19 +969,19 @@
       <div class="service-num">05</div>
       <div class="service-icon">🚀</div>
       <h3>Startup &amp; MSME Incubation</h3>
-      <p>Comprehensive handholding from ideation to execution,ensuring sustainable growth and alignment with national missions for startups and MSMEs.</p>
+      <p>Comprehensive handholding from ideation to execution, ensuring sustainable growth and alignment with national missions for startups and MSMEs.</p>
     </div>
     <div class="service-card">
       <div class="service-num">06</div>
       <div class="service-icon">🌟</div>
       <h3>Coaching &amp; Leadership Mentoring</h3>
-      <p>Tailored coaching for individuals and organisations,fostering personal growth, strategic thinking, and long,term vision for social entrepreneurs and public leaders.</p>
+      <p>Tailored coaching for individuals and organisations, fostering personal growth, strategic thinking, and long-term vision for social entrepreneurs and public leaders.</p>
     </div>
     <div class="service-card">
       <div class="service-num">07</div>
       <div class="service-icon">🎙️</div>
       <h3>Conferences &amp; Knowledge Events</h3>
-      <p>High impact dialogues and knowledge sharing events stimulating public discourse on policy innovation, inclusive development, and transformative governance.</p>
+      <p>High-impact dialogues and knowledge sharing events stimulating public discourse on policy innovation, inclusive development, and transformative governance.</p>
     </div>
     <div class="service-card">
       <div class="service-num">08</div>
@@ -951,26 +992,24 @@
   </div>
 </section>
 
-<!-- VISION BAND -->
 <div class="vision-band">
-  <h2>Aligned with India@2047,Building the nation one policy at a time</h2>
+  <h2>Aligned with India@2047, Building the nation one policy at a time</h2>
   <p>Every intervention we design, every partnership we forge, and every capacity we build is in service of a developed, equitable, and resilient India by 2047.</p>
 </div>
 
-<!-- PILLARS -->
 <section id="pillars">
   <div class="reveal" style="text-align:center;max-width:700px;margin:0 auto;">
     <div class="section-label">Our Approach</div>
     <h2 class="section-title" style="margin:0 auto;">Three pillars of transformative action</h2>
     <p class="section-body" style="margin:1.5rem auto 0;">
-      Our methodology is grounded in a triad of commitments that guide every engagement,from initial diagnostics to large,scale implementation.
+      Our methodology is grounded in a triad of commitments that guide every engagement, from initial diagnostics to large-scale implementation.
     </p>
   </div>
   <div class="pillars-grid reveal">
     <div class="pillar">
       <div class="pillar-icon">🔬</div>
       <h3>Evidence First</h3>
-      <p>We anchor every recommendation in data, research, and demonstrated best practice,drawing from global models while remaining firmly grounded in local realities and national priorities.</p>
+      <p>We anchor every recommendation in data, research, and demonstrated best practice, drawing from global models while remaining firmly grounded in local realities and national priorities.</p>
     </div>
     <div class="pillar">
       <div class="pillar-icon">🎯</div>
@@ -980,12 +1019,11 @@
     <div class="pillar">
       <div class="pillar-icon">♻️</div>
       <h3>Scalable &amp; Replicable</h3>
-      <p>We build frameworks designed to scale,creating models that can be replicated across regions and adapted for diverse implementation environments without losing their core effectiveness.</p>
+      <p>We build frameworks designed to scale, creating models that can be replicated across regions and adapted for diverse implementation environments without losing their core effectiveness.</p>
     </div>
   </div>
 </section>
 
-<!-- FOUNDER -->
 <section id="founder">
   <div class="section-label" style="color:var(--gold);">Our Founder</div>
   <div class="founder-grid">
@@ -1010,17 +1048,15 @@
         Vineeta Hariharan is a distinguished public policy leader, strategic advisor, keynote speaker, and author whose career spans nearly three decades at the highest levels of India's governance, development, and corporate sectors. A thought leader in nation-building, she serves on the board of studies of leading global institutes, mentors social foundations, and holds advisory positions across organisations working to empower women, strengthen rural networks, and spread innovation.
       </p>
       <p class="founder-bio">
-        Vineeta was conferred the Woman of Excellence Award twice by the Indian Achiever's Forum,an honour celebrating individuals of strong will and dedication who stand apart in their field. She holds a Master of Planning from the School of Planning and Architecture, New Delhi; a Master in Public Administration from the Lee Kuan Yew School of Public Policy, National University of Singapore (2010–11); a UN Habitat Fellowship from Erasmus University, Rotterdam; and an Executive Programme in Business Management from IIM Calcutta.
+        Vineeta was conferred the Woman of Excellence Award twice by the Indian Achiever's Forum, an honour celebrating individuals of strong will and dedication who stand apart in their field. She holds a Master of Planning from the School of Planning and Architecture, New Delhi; a Master in Public Administration from the Lee Kuan Yew School of Public Policy, National University of Singapore (2010–11); a UN Habitat Fellowship from Erasmus University, Rotterdam; and an Executive Programme in Business Management from IIM Calcutta.
       </p>
       <p class="founder-bio">
-        After a decade in senior roles across India's public and private sectors, her mid,career training at NUS broadened her perspective on policymaking, especially in Southeast Asia. Since 2012, she has worked with bilateral and multilateral institutions,World Bank,engagingincluding DFID and the World Bank,engaging with senior bureaucracy and political leadership in policy formulation and leading flagship programmes across Urban, Rural, and Enterprise development ministries.
+        After a decade in senior roles across India's public and private sectors, her mid-career training at NUS broadened her perspective on policymaking, especially in Southeast Asia. Since 2012, she has worked with bilateral and multilateral institutions, including DFID and the World Bank, engaging with senior bureaucracy and political leadership in policy formulation and leading flagship programmes across Urban, Rural, and Enterprise development ministries.
       </p>
-
       <div class="founder-global">
-        <h4>Selected Flagship Programmes</h4>World Bank — engaging
+        <h4>Selected Flagship Programmes</h4>
         <p>National Rurban Mission (MoRD) · RAMP Programme, World Bank &amp; Ministry of MSME · PM Formalisation of Micro Enterprises (PMFME) · Green Affordable Housing Initiative (AFD/CRISIL) · Smart Cities Mission Advisory · Public Affairs, Coca-Cola India &amp; Reliance Retail</p>
       </div>
-
       <div class="founder-more-info">
         <p style="text-align:right;"><a href="https://vineetahariharan.org" target="_blank" rel="noopener" class="btn-primary" style="text-decoration:none;display:inline-block;">View More Details →</a></p>
       </div>
@@ -1028,18 +1064,14 @@
   </div>
 </section>
 
-<!-- GALLERY -->
 <section id="gallery">
   <div class="gallery-header reveal">
     <div class="center">
       <h2 class="section-title">Moments of Impact</h2>
       <p class="section-body" style="margin-top:0.8rem;">
-        From policy conferences and government deliberations to community programmes and international forums,a glimpse into Vineeta Hariharan's journey of nationbuilding.
+        From policy conferences and government deliberations to community programmes and international forums, a glimpse into Vineeta Hariharan's journey of nation building.
       </p>
-    </div>
-  </div>
-
-  <div class="gallery-grid reveal">
+    <div class="gallery-grid reveal">
     <div class="gallery-item tall" data-cat="conf" data-index="0">
       <img src="https://static.wixstatic.com/media/3e8974_ee108fbcb2c2462aacfa8d0a18d3641c~mv2.jpg/v1/fill/w_600,h_800,fp_0.52_0.38,q_80,enc_avif,quality_auto/3e8974_ee108fbcb2c2462aacfa8d0a18d3641c~mv2.jpg" alt="Conference" loading="lazy">
       <div class="overlay"><span class="overlay-label">Conference &amp; Dialogue</span></div>
@@ -1143,7 +1175,7 @@
   </div>
 </section>
 
-<!-- LIGHTBOX -->
+
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lb-close">✕</button>
   <button class="lightbox-nav lightbox-prev" id="lb-prev">‹</button>
@@ -1152,54 +1184,44 @@
   <div class="lightbox-counter" id="lb-counter"></div>
 </div>
 
-<!-- CONTACT -->
 <section id="contact">
+
   <div class="contact-info reveal">
     <div class="section-label">Get in Touch</div>
     <h2 class="section-title">Partner with us for policy-driven impact</h2>
-    <p class="section-body">
+    <p class="section-body" style="margin-bottom: 2.5rem;">
       Whether you represent a government body, corporate, NGO, startup, or academic institution, we would love to explore how Sankassa Solutions can support your mission.
     </p>
-      <div class="contact-row">
-        <div class="icon">📋</div>
-        <div>
-          <div class="label">Company Type</div>
-          <div class="value">One Person Company (OPC) · Limited by Shares<br>Incorporated under the Companies Act, 2013</div>
-        </div>
+    <div class="contact-row">
+      <div class="icon">📋</div>
+      <div>
+        <div class="label">Company Type</div>
+        <div class="value">One Person Company (OPC) · Limited by Shares<br>Incorporated under the Companies Act, 2013</div>
       </div>
-
-      <div class="contact-row">
-  <div class="icon">📄</div>
-  <div>
-    <div class="label">Startup India Recognition</div>
-    <div class="value">
-      <a href="Certifcate.jpg" target="_blank" rel="noopener" style="color:var(--saffron);text-decoration:underline;">
-        DIPP217765
-      </a>
+    </div>
+    <div class="contact-row">
+      <div class="icon">📄</div>
+      <div>
+        <div class="label">Startup India Recognition</div>
+        <div class="value"><a href="Certifcate.jpg" target="_blank" rel="noopener" style="color:var(--saffron);text-decoration:underline;">DIPP217765</a></div>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="contact-form-area reveal">
     <h3 style="text-align:center;">Send us a message</h3>
-    <form id="contactForm" action="https://formspree.io/f/maqgpqwo" method="POST" style="text-align:left;">
-      <div class="form-group">
-        <label>Your Name</label>
-        <input type="text" name="name" placeholder="Full name" required>
+    <form id="contactForm" style="text-align:left;">
+      <div class="form-group"><label>Full Name *</label><input type="text" name="name" placeholder="Full name" required></div>
+      <div class="form-group"><label>Company Name</label><input type="text" name="company" placeholder="Your organisation"></div>
+      <div class="form-group"><label>Email Address *</label><input type="email" name="email" placeholder="you@organisation.com" required></div>
+      <div class="form-group"><label>Mobile Number *</label><input type="tel" name="mobile" placeholder="+91 " pattern="[0-9+\-\s]{7,15}" required></div>
+      <div class="form-group"><label>Organization Type</label>
+        <select name="orgType"><option value="">Select one</option><option>Government Body</option><option>Corporate</option><option>NGO</option><option>Startup</option></select>
       </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" name="email" placeholder="you@organisation.com" required>
-      </div>
-      <div class="form-group">
-        <label>Organisation</label>
-        <input type="text" name="organisation" placeholder="Your organisation">
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea name="message" placeholder="Tell us about your requirement…" required></textarea>
-      </div>
-      <input type="hidden" name="_subject" value="New message from Sankassa Solutions website">
+      <div class="form-group"><label>Preferred Meeting Date</label><input type="date" name="meetingDate"></div>
+      <div class="form-group"><label>Message *</label><textarea name="message" placeholder="Tell us about your requirement…" required></textarea></div>
+      <input type="hidden" name="_subject" value="New enquiry from Sankassa Solutions website">
+      <input type="hidden" name="_captcha" value="false">
       <button class="btn-primary" type="submit" id="contactSubmitBtn">Send Message →</button>
       <p id="contactFormStatus" style="margin-top:0.9rem; font-size:0.85rem;"></p>
     </form>
@@ -1208,40 +1230,32 @@
 
 <script>
   (function () {
+    const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxuz-ZhaBYUj0EeoBQ3tvttPUVZIydC9w_X2km-0k0f9Ez0WUpoQDaB6tU4x0JxZdLH/exec";
     const form = document.getElementById('contactForm');
     const status = document.getElementById('contactFormStatus');
     const btn = document.getElementById('contactSubmitBtn');
     if (!form) return;
-
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       btn.disabled = true;
       btn.textContent = 'Sending…';
       status.textContent = '';
-      status.style.color = '';
-
       try {
-        const response = await fetch(form.action, {
+        const response = await fetch(FORM_ENDPOINT, {
           method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
+          body: new FormData(form)
         });
-
-        if (response.ok) {
-          status.textContent = 'Thank you — your message has been sent. We will get back to you shortly.';
+        const data = await response.json().catch(() => null);
+        if (data && data.result === 'success') {
+          status.textContent = 'Thank you — your enquiry has been sent. We will get back to you shortly.';
           status.style.color = 'var(--sage)';
           form.reset();
         } else {
-          const data = await response.json().catch(() => null);
-          if (data && data.errors) {
-            status.textContent = data.errors.map(err => err.message).join(', ');
-          } else {
-            status.textContent = 'Something went wrong. Please try again or email us directly.';
-          }
+          status.textContent = 'Something went wrong. Please try again or email us directly.';
           status.style.color = 'var(--saffron)';
         }
       } catch (err) {
-        status.textContent = 'Network error — please try again or email us directly.';
+        status.textContent = 'Submission connectivity issue. Please reach out via phone channels.';
         status.style.color = 'var(--saffron)';
       } finally {
         btn.disabled = false;
@@ -1251,47 +1265,32 @@
   })();
 </script>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-brand">Sankassa Solutions</div>
   <div class="footer-legal">
-    © 2025 Sankassa Solutions (OPC) Private Limited. All rights reserved.<br>
+    © 2026 Sankassa Solutions (OPC) Private Limited. All rights reserved.<br>
     CIN: Registered under Companies Act, 2013 · State of Kerala
   </div>
   <div class="footer-links">
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#founder">Founder</a>
-    <a href="#contact">Contact</a>
+    <a href="#about">About</a><a href="#services">Services</a><a href="#founder">Founder</a><a href="#contact">Contact</a>
   </div>
 </footer>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      }
-    });
+    entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 80); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-  reveals.forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Nav active state
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navLinks = document.querySelectorAll('nav ul a');
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    navLinks.forEach(a => {
+    document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    document.querySelectorAll('nav ul a').forEach(a => {
       a.style.opacity = a.getAttribute('href') === '#' + current ? '1' : '0.7';
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--saffron)' : '';
     });
   });
-  // Gallery filter
+
   const filterBtns = document.querySelectorAll('.filter-btn');
   const galleryItems = document.querySelectorAll('.gallery-item');
   filterBtns.forEach(btn => {
@@ -1299,54 +1298,8 @@
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
-      galleryItems.forEach(item => {
-        if (filter === 'all' || item.dataset.cat === filter) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
+      galleryItems.forEach(item => { item.style.display = (filter === 'all' || item.dataset.cat === filter) ? 'block' : 'none'; });
     });
-  });
-
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
-  const lbCounter = document.getElementById('lb-counter');
-  let currentIndex = 0;
-  const allImgs = Array.from(galleryItems).map(item => item.querySelector('img'));
-
-  function openLightbox(idx) {
-    currentIndex = idx;
-    lbImg.src = allImgs[idx].src.replace(/w_\d+,h_\d+/, 'w_1200,h_900');
-    lbCounter.textContent = (idx + 1) + ' / ' + allImgs.length;
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    lightbox.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  galleryItems.forEach((item, idx) => {
-    item.addEventListener('click', () => openLightbox(idx));
-  });
-
-  document.getElementById('lb-close').addEventListener('click', closeLightbox);
-  document.getElementById('lb-prev').addEventListener('click', () => {
-    openLightbox((currentIndex - 1 + allImgs.length) % allImgs.length);
-  });
-  document.getElementById('lb-next').addEventListener('click', () => {
-    openLightbox((currentIndex + 1) % allImgs.length);
-  });
-  lightbox.addEventListener('click', e => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', e => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') openLightbox((currentIndex - 1 + allImgs.length) % allImgs.length);
-    if (e.key === 'ArrowRight') openLightbox((currentIndex + 1) % allImgs.length);
   });
 </script>
 </body>
